@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useState } from "react";
 import { useEffect } from "react";
 
@@ -7,7 +8,16 @@ const WeatherIcon = () => {
 
   const getWeather = async () => {
     try {
-    } catch (error) {}
+      const response = await axios.get(
+        `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${
+          import.meta.env.VITE_API_KEY
+        }&units=metric`
+      );
+
+      console.log(response);
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   useEffect(() => {
@@ -16,6 +26,12 @@ const WeatherIcon = () => {
       setLongitude(position.coords.longitude);
     });
   }, []);
+
+  useEffect(() => {
+    if (!latitude) return;
+
+    getWeather();
+  }, [latitude]);
 
   return <div>WeatherIcon</div>;
 };
